@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Main from '../../components/Main/Main';
 
@@ -8,40 +8,29 @@ const formatTime = time => {
 
 const MY_BIRTHDAY = formatTime(moment().diff('19870503', 'minutes'));
 
-class MainContainer extends Component {
-  state = {
-    time: MY_BIRTHDAY,
-    measurement: 'minutes'
+const MainContainer = () => {
+  const [time, setTime] = useState(MY_BIRTHDAY);
+  const [measurement, setMeasurement] = useState('minutes');
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const time = formatTime(moment().diff('19870503', measurement));
+      setTime(time);
+    }, measurement);
+    return () => clearInterval(timer);
+  }, [measurement]);
+
+  const changeMeasurement = unit => () => {
+    setMeasurement(unit);
   };
 
-  componentDidMount() {
-    setInterval(this.updateTime, this.state.measurement);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.measurement !== prevState.measurement) {
-      setInterval(this.updateTime, this.state.measurement);
-    }
-  }
-
-  updateTime = (measurement = this.state.measurement) => {
-    const time = formatTime(moment().diff('19870503', measurement));
-    this.setState({ time });
-  };
-
-  changeMeasurement = measurement => () => {
-    this.setState({ measurement });
-  };
-
-  render() {
-    return (
-      <Main
-        time={this.state.time}
-        changeMeasurement={this.changeMeasurement}
-        measurement={this.state.measurement}
-      />
-    );
-  }
-}
+  return (
+    <Main
+      time={time}
+      measurement={measurement}
+      changeMeasurement={changeMeasurement}
+    />
+  );
+};
 
 export default MainContainer;
