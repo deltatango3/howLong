@@ -6,19 +6,20 @@ const formatTime = time => {
   return time.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-const MY_BIRTHDAY = formatTime(moment().diff('19870503', 'minutes'));
+const MY_BIRTHDAY = formatTime(moment().diff('1987-05-03', 'minutes'));
 
 const MainContainer = () => {
   const [time, setTime] = useState(MY_BIRTHDAY);
+  const [date, setDate] = useState('1987-05-03');
   const [measurement, setMeasurement] = useState('minutes');
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const time = formatTime(moment().diff('19870503', measurement));
-      setTime(time);
+      const newTime = formatTime(moment().diff(date, measurement));
+      setTime(newTime);
     }, measurement);
     return () => clearInterval(timer);
-  }, [measurement]);
+  }, [measurement, date]);
 
   const changeMeasurement = unit => () => {
     setMeasurement(unit);
@@ -27,6 +28,8 @@ const MainContainer = () => {
   return (
     <Main
       time={time}
+      date={date}
+      setDate={setDate}
       measurement={measurement}
       changeMeasurement={changeMeasurement}
     />
