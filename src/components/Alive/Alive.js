@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Grid, TextField, Typography } from '@material-ui/core';
 
-const UNITS = ['days', 'hours', 'minutes', 'seconds'];
+const UNITS = ['seconds', 'minutes', 'hours', 'days'];
 
 const getButtons = props => {
   return UNITS.map(unit => {
@@ -20,7 +20,7 @@ const getButtons = props => {
   });
 };
 
-const Main = props => {
+const Alive = props => {
   const [value, setValue] = useState(props.date);
 
   const handleChange = input => {
@@ -50,4 +50,4 @@ const Main = props => {
   );
 };
 
-export default Main;
+export default Alive;
