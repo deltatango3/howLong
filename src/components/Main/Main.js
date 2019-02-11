@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Button } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, Grid, TextField, Typography } from '@material-ui/core';
 
 const UNITS = ['days', 'hours', 'minutes', 'seconds'];
 
@@ -21,13 +21,32 @@ const getButtons = props => {
 };
 
 const Main = props => {
+  const [value, setValue] = useState(props.date);
+
+  const handleChange = input => {
+    const date = input.target.value;
+    setValue(date);
+    props.setDate(date);
+  };
+
   return (
-    <Fragment>
-      <h1>
-        {props.time} {props.measurement}
-      </h1>
-      <div>{getButtons(props)}</div>
-    </Fragment>
+    <Grid container direction="column" align="center" spacing={32}>
+      <Grid item>
+        <Typography variant="h3">
+          {props.time} {props.measurement}
+        </Typography>
+      </Grid>
+      <Grid item>{getButtons(props)}</Grid>
+      <Grid item>
+        <TextField
+          id="date"
+          label="Birthday"
+          type="date"
+          defaultValue={value}
+          onChange={handleChange}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
